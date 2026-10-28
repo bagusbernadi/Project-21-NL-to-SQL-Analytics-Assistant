@@ -1,0 +1,151 @@
+# Golden set 30 pertanyaan (ditulis manual). reference_sql kosong = jawaban benar adalah meminta klarifikasi.
+- question_id: G01
+  type: agregasi
+  language: id
+  question: Berapa total unit yang masuk Engine Assembly selama seluruh periode?
+  reference_sql: SELECT SUM(input_qty) AS total_input FROM production_daily WHERE station = 'Engine Assembly'
+- question_id: G02
+  type: agregasi
+  language: id
+  question: Berapa total NG di Frame Painting?
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE station = 'Frame Painting'
+- question_id: G03
+  type: agregasi
+  language: en
+  question: How many units passed first pass at Final Inspection in total?
+  reference_sql: SELECT SUM(ok_first_pass) AS total_ok FROM production_daily WHERE station = 'Final Inspection'
+- question_id: G04
+  type: agregasi
+  language: id
+  question: Berapa rata-rata jumlah input per catatan untuk model Sport 150?
+  reference_sql: SELECT AVG(input_qty) AS avg_input FROM production_daily WHERE model = 'Sport 150'
+- question_id: G05
+  type: agregasi
+  language: en
+  question: What is the total NG quantity per station?
+  reference_sql: SELECT station, SUM(ng_qty) AS total_ng FROM production_daily GROUP BY station ORDER BY station
+- question_id: G06
+  type: agregasi
+  language: id
+  question: Berapa total defect per model?
+  reference_sql: SELECT model, SUM(qty) AS total_defect FROM defect_log GROUP BY model ORDER BY model
+- question_id: G07
+  type: agregasi
+  language: en
+  question: Which station has the highest total NG quantity?
+  reference_sql: SELECT station, SUM(ng_qty) AS total_ng FROM production_daily GROUP BY station ORDER BY total_ng DESC, station LIMIT 1
+- question_id: G08
+  type: agregasi
+  language: id
+  question: Berapa jumlah hari produksi di data?
+  reference_sql: SELECT COUNT(DISTINCT date) AS hari_produksi FROM production_daily
+- question_id: G09
+  type: filter tanggal
+  language: id
+  question: Berapa total NG Engine Assembly minggu lalu?
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-08' AND DATE '2026-06-14'
+- question_id: G10
+  type: filter tanggal
+  language: id
+  question: Berapa total input produksi di Packing pada bulan Mei 2026?
+  reference_sql: SELECT SUM(input_qty) AS total_input FROM production_daily WHERE station = 'Packing' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+- question_id: G11
+  type: filter tanggal
+  language: en
+  question: How many NG units were recorded at Frame Welding in April 2026?
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE station = 'Frame Welding' AND date >= DATE '2026-04-01' AND date < DATE '2026-05-01'
+- question_id: G12
+  type: filter tanggal
+  language: id
+  question: Berapa total defect pada tanggal 2026-04-15?
+  reference_sql: SELECT SUM(qty) AS total_defect FROM defect_log WHERE date = DATE '2026-04-15'
+- question_id: G13
+  type: filter tanggal
+  language: en
+  question: What is the total NG on Shift 2 between 2026-05-01 and 2026-05-15?
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE shift = 'Shift 2' AND date BETWEEN DATE '2026-05-01' AND DATE '2026-05-15'
+- question_id: G14
+  type: filter tanggal
+  language: id
+  question: Berapa total NG seluruh lini bulan ini?
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE date >= DATE '2026-06-01' AND date <= DATE '2026-06-17'
+- question_id: G15
+  type: filter tanggal
+  language: en
+  question: What was the total input at Wheel & Suspension last month?
+  reference_sql: SELECT SUM(input_qty) AS total_input FROM production_daily WHERE station = 'Wheel & Suspension' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+- question_id: G16
+  type: join
+  language: id
+  question: Berapa total defect kategori Las?
+  reference_sql: SELECT SUM(d.qty) AS total_defect FROM defect_log d JOIN dim_defect x ON x.defect_code = d.defect_code WHERE x.category = 'Las'
+- question_id: G17
+  type: join
+  language: en
+  question: Which defect name has the highest quantity?
+  reference_sql: SELECT x.defect_name, SUM(d.qty) AS total_defect FROM defect_log d JOIN dim_defect x ON x.defect_code = d.defect_code GROUP BY x.defect_name ORDER BY total_defect DESC, x.defect_name LIMIT 1
+- question_id: G18
+  type: join
+  language: id
+  question: Berapa total defect di Frame Painting menurut nama defect?
+  reference_sql: SELECT x.defect_name, SUM(d.qty) AS total_defect FROM defect_log d JOIN dim_defect x ON x.defect_code = d.defect_code WHERE d.station = 'Frame Painting' GROUP BY x.defect_name ORDER BY x.defect_name
+- question_id: G19
+  type: join
+  language: en
+  question: How many defects of category Cat occurred for model Sport 150?
+  reference_sql: SELECT SUM(d.qty) AS total_defect FROM defect_log d JOIN dim_defect x ON x.defect_code = d.defect_code WHERE x.category = 'Cat' AND d.model = 'Sport 150'
+- question_id: G20
+  type: join
+  language: id
+  question: Berapa total defect kategori Kelistrikan per stasiun?
+  reference_sql: SELECT d.station, SUM(d.qty) AS total_defect FROM defect_log d JOIN dim_defect x ON x.defect_code = d.defect_code WHERE x.category = 'Kelistrikan' GROUP BY d.station ORDER BY d.station
+- question_id: G21
+  type: join
+  language: en
+  question: List the stations in production order with their total NG quantity.
+  reference_sql: SELECT s.station, SUM(p.ng_qty) AS total_ng FROM production_daily p JOIN dim_station s ON s.station = p.station GROUP BY s.station, s.seq ORDER BY s.seq
+- question_id: G22
+  type: definisi KPI
+  language: id
+  question: Berapa FPY Engine Assembly?
+  reference_sql: SELECT SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily WHERE station = 'Engine Assembly'
+- question_id: G23
+  type: definisi KPI
+  language: en
+  question: Which station has the lowest FPY?
+  reference_sql: SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily GROUP BY station ORDER BY fpy, station LIMIT 1
+- question_id: G24
+  type: definisi KPI
+  language: id
+  question: Berapa NG rate per model?
+  reference_sql: SELECT model, SUM(ng_qty) * 1.0 / SUM(input_qty) AS ng_rate FROM production_daily GROUP BY model ORDER BY model
+- question_id: G25
+  type: definisi KPI
+  language: en
+  question: What is the RTY of the line for Bebek 125?
+  reference_sql: WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily WHERE model = 'Bebek 125' GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f
+- question_id: G26
+  type: definisi KPI
+  language: id
+  question: Berapa defect per 1.000 unit di Body Panel Assembly?
+  reference_sql: SELECT (SELECT SUM(qty) FROM defect_log WHERE station = 'Body Panel Assembly') * 1000.0 / (SELECT SUM(input_qty) FROM production_daily WHERE station = 'Body Panel Assembly') AS defect_per_1000
+- question_id: G27
+  type: definisi KPI
+  language: en
+  question: What is the overall yield of the line?
+  reference_sql: WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f
+- question_id: G28
+  type: ambigu
+  language: id
+  question: Yield kemarin bagus nggak?
+  reference_sql: null
+- question_id: G29
+  type: ambigu
+  language: en
+  question: Is the line doing well?
+  reference_sql: null
+- question_id: G30
+  type: ambigu
+  language: id
+  question: Stasiun mana yang bermasalah?
+  reference_sql: null

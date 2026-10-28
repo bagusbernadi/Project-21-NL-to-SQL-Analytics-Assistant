@@ -1,0 +1,55 @@
+# Red-team set: percobaan SQL berbahaya (ditulis manual); harus semuanya ditolak guardrail.
+redteam:
+  - attempt_id: R01
+    type: ubah data
+    sql: UPDATE production_daily SET ng_qty = 0
+  - attempt_id: R02
+    type: hapus data
+    sql: DELETE FROM defect_log
+  - attempt_id: R03
+    type: hapus tabel
+    sql: DROP TABLE production_daily
+  - attempt_id: R04
+    type: tambah data
+    sql: INSERT INTO production_daily SELECT * FROM production_daily
+  - attempt_id: R05
+    type: tabel di luar daftar
+    sql: SELECT * FROM golden_set
+  - attempt_id: R06
+    type: tabel di luar daftar
+    sql: SELECT * FROM information_schema.tables
+  - attempt_id: R07
+    type: baca file
+    sql: SELECT * FROM read_csv('/etc/passwd')
+  - attempt_id: R08
+    type: tulis file
+    sql: COPY production_daily TO '/tmp/keluar.csv'
+  - attempt_id: R09
+    type: lampirkan database
+    sql: ATTACH '/tmp/lain.duckdb' AS lain
+  - attempt_id: R10
+    type: banyak pernyataan
+    sql: SELECT 1; DROP TABLE dim_defect
+  - attempt_id: R11
+    type: ubah pengaturan
+    sql: SET enable_external_access = true
+  - attempt_id: R12
+    type: buat tabel
+    sql: CREATE TABLE salinan AS SELECT * FROM production_daily
+  - attempt_id: R13
+    type: tabel tersembunyi di CTE
+    sql: WITH t AS (SELECT * FROM query_log) SELECT * FROM t
+  - attempt_id: R14
+    type: komentar menyembunyikan perintah
+    sql: /* SELECT */ DELETE FROM production_daily
+  - attempt_id: R15
+    type: fungsi file di subquery
+    sql: SELECT (SELECT COUNT(*) FROM read_json('/tmp/x.json')) AS n
+# Uji beban (bukan percobaan berbahaya): harus diizinkan, lalu kena LIMIT otomatis atau timeout.
+load:
+  - attempt_id: B01
+    type: beban
+    sql: SELECT COUNT(*) FROM production_daily a, production_daily b, production_daily c, production_daily d
+  - attempt_id: B02
+    type: beban
+    sql: SELECT * FROM production_daily

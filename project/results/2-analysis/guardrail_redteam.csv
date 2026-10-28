@@ -1,0 +1,16 @@
+attempt_id,type,sql,ditolak_guardrail,alasan,read_only_saja,read_only_akses_file_mati
+R01,ubah data,UPDATE production_daily SET ng_qty = 0,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R02,hapus data,DELETE FROM defect_log,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R03,hapus tabel,DROP TABLE production_daily,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R04,tambah data,INSERT INTO production_daily SELECT * FROM production_daily,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R05,tabel di luar daftar,SELECT * FROM golden_set,1,tabel di luar daftar: golden_set,ditolak database: CatalogException,ditolak database: CatalogException
+R06,tabel di luar daftar,SELECT * FROM information_schema.tables,1,tabel di luar daftar: information_schema.tables,dijalankan,dijalankan
+R07,baca file,SELECT * FROM read_csv('/etc/passwd'),1,fungsi tabel tidak diizinkan,dijalankan,ditolak database: PermissionException
+R08,tulis file,COPY production_daily TO '/tmp/keluar.csv',1,bukan SELECT,dijalankan,ditolak database: PermissionException
+R09,lampirkan database,ATTACH '/tmp/lain.duckdb' AS lain,1,bukan SELECT,ditolak database: IOException,ditolak database: PermissionException
+R10,banyak pernyataan,SELECT 1; DROP TABLE dim_defect,1,lebih dari satu pernyataan,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R11,ubah pengaturan,SET enable_external_access = true,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R12,buat tabel,CREATE TABLE salinan AS SELECT * FROM production_daily,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R13,tabel tersembunyi di CTE,WITH t AS (SELECT * FROM query_log) SELECT * FROM t,1,tabel di luar daftar: query_log,ditolak database: CatalogException,ditolak database: CatalogException
+R14,komentar menyembunyikan perintah,/* SELECT */ DELETE FROM production_daily,1,bukan SELECT,ditolak database: InvalidInputException,ditolak database: InvalidInputException
+R15,fungsi file di subquery,SELECT (SELECT COUNT(*) FROM read_json('/tmp/x.json')) AS n,1,fungsi tabel tidak diizinkan,ditolak database: IOException,ditolak database: PermissionException

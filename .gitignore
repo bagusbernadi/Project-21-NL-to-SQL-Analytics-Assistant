@@ -1,4 +1,11 @@
 # data simulasi dibuat ulang oleh generator (seed tetap); jejaknya dicatat di repo DataCenter/simulasi
-data/*
-!data/README.md
+project/data/*
+!project/data/README.md
 __pycache__/
+project/*.duckdb
+project/*.duckdb.wal
+.env
+.streamlit/secrets.toml
+.pytest_cache/
+.ipynb_checkpoints/
+*.pyc

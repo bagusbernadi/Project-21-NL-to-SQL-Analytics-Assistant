@@ -1,0 +1,32 @@
+cek,item,dibandingkan,cocok
+SQL referensi vs pandas,G01,1,1
+SQL referensi vs pandas,G02,1,1
+SQL referensi vs pandas,G03,1,1
+SQL referensi vs pandas,G04,1,1
+SQL referensi vs pandas,G05,1,1
+SQL referensi vs pandas,G06,1,1
+SQL referensi vs pandas,G07,1,1
+SQL referensi vs pandas,G08,1,1
+SQL referensi vs pandas,G09,1,1
+SQL referensi vs pandas,G10,1,1
+SQL referensi vs pandas,G11,1,1
+SQL referensi vs pandas,G12,1,1
+SQL referensi vs pandas,G13,1,1
+SQL referensi vs pandas,G14,1,1
+SQL referensi vs pandas,G15,1,1
+SQL referensi vs pandas,G16,1,1
+SQL referensi vs pandas,G17,1,1
+SQL referensi vs pandas,G18,1,1
+SQL referensi vs pandas,G19,1,1
+SQL referensi vs pandas,G20,1,1
+SQL referensi vs pandas,G21,1,1
+SQL referensi vs pandas,G22,1,1
+SQL referensi vs pandas,G23,1,1
+SQL referensi vs pandas,G24,1,1
+SQL referensi vs pandas,G25,1,1
+SQL referensi vs pandas,G26,1,1
+SQL referensi vs pandas,G27,1,1
+view v_kpi_station vs pandas,fpy per stasiun,10,10
+view v_rty_model vs pandas,rty per model,3,3
+view v_trend_week vs pandas,ng rate mingguan,15,15
+view v_pareto_defect vs pandas,defect per nama,20,20

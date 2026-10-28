@@ -1,0 +1,11 @@
+pemeriksaan,hasil
+halaman Tanya data tanpa error,lulus
+pertanyaan biasa tanpa error,lulus
+SQL ditampilkan,lulus
+jawaban sama dengan database,lulus
+stasiun FPY terendah sama dengan view,lulus
+pertanyaan ambigu meminta klarifikasi,lulus
+guardrail menolak DELETE di aplikasi,lulus
+halaman Hasil evaluasi tanpa error,lulus
+akurasi sama dengan CSV,lulus
+red-team sama dengan CSV,lulus

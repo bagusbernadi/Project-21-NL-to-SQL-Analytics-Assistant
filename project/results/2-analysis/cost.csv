@@ -1,0 +1,10 @@
+config,pengali_harga,token_masukan_rata,token_keluaran_rata,usd_per_100_pertanyaan,label
+tanpa_skema,0.5,60.76666667,28.96666667,0.03084,estimated
+tanpa_skema,1,60.76666667,28.96666667,0.06168,estimated
+tanpa_skema,2,60.76666667,28.96666667,0.12336,estimated
+skema,0.5,326.6,29.56666667,0.071165,estimated
+skema,1,326.6,29.56666667,0.14233,estimated
+skema,2,326.6,29.56666667,0.28466,estimated
+skema_kpi,0.5,576.2333333,30.9,0.10961,estimated
+skema_kpi,1,576.2333333,30.9,0.21922,estimated
+skema_kpi,2,576.2333333,30.9,0.43844,estimated

@@ -1,0 +1,19 @@
+config,kategori,jumlah
+tanpa_skema,diblokir guardrail,27
+tanpa_skema,SQL error,0
+tanpa_skema,hasil salah,0
+tanpa_skema,ambigu tidak diklarifikasi,3
+tanpa_skema,klarifikasi keliru,0
+tanpa_skema,timeout,0
+skema,diblokir guardrail,0
+skema,SQL error,1
+skema,hasil salah,7
+skema,ambigu tidak diklarifikasi,3
+skema,klarifikasi keliru,0
+skema,timeout,0
+skema_kpi,diblokir guardrail,0
+skema_kpi,SQL error,1
+skema_kpi,hasil salah,0
+skema_kpi,ambigu tidak diklarifikasi,0
+skema_kpi,klarifikasi keliru,0
+skema_kpi,timeout,0

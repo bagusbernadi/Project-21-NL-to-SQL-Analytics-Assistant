@@ -2,7 +2,7 @@
 
 Hasil (data/sim/): production_daily.csv, defect_log.csv, dim_defect.csv, dim_station.csv, ground_truth.json.
 Golden set 30 pertanyaan dan red-team set disusun manual (folder eval/), bukan dari skrip ini.
-Jalankan: python scripts/generate_data.py   (versi data: v2)
+Jalankan: python3 code/1-data-preparation/python/00_generate_data.py (dari folder project)   (versi data: v2)
 """
 import json
 from pathlib import Path
@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "data" / "sim"
 START_DATE = "2026-03-02"      # Senin
 N_DAYS = 75                    # hari kerja Senin-Jumat

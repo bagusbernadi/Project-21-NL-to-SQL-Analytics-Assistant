@@ -1,0 +1,4 @@
+menit_manual,pertanyaan_per_bulan,akurasi_skema_kpi,jam_hemat_per_bulan,jam_hemat_per_bulan_kotor,dasar,label
+5,200,0.9666666667,16.11111111,16.66666667,0,estimated
+15,200,0.9666666667,48.33333333,50,1,estimated
+30,200,0.9666666667,96.66666667,100,0,estimated

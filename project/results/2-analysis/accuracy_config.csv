@@ -1,0 +1,4 @@
+config,benar,n,akurasi,ci_low,ci_high,target,capai_target,ci_bawah_di_atas_target
+tanpa_skema,0,30,0,0,0.1135133948,0.85,0,0
+skema,19,30,0.6333333333,0.4551356352,0.7812607929,0.85,0,0
+skema_kpi,29,30,0.9666666667,0.8332960885,0.9940914097,0.85,1,0

@@ -1,0 +1,16 @@
+config,type,benar,n,akurasi,ci_low,ci_high
+tanpa_skema,agregasi,0,8,0,0,0.3244075683
+tanpa_skema,filter tanggal,0,7,0,0,0.3543304387
+tanpa_skema,join,0,6,0,0,0.3903342917
+tanpa_skema,definisi KPI,0,6,0,0,0.3903342917
+tanpa_skema,ambigu,0,3,0,0,0.5614970356
+skema,agregasi,8,8,1,0.6755924317,1
+skema,filter tanggal,6,7,0.8571428571,0.4868721679,0.9743203759
+skema,join,5,6,0.8333333333,0.436497175,0.9699466306
+skema,definisi KPI,0,6,0,0,0.3903342917
+skema,ambigu,0,3,0,0,0.5614970356
+skema_kpi,agregasi,8,8,1,0.6755924317,1
+skema_kpi,filter tanggal,7,7,1,0.6456695613,1
+skema_kpi,join,5,6,0.8333333333,0.436497175,0.9699466306
+skema_kpi,definisi KPI,6,6,1,0.6096657083,1
+skema_kpi,ambigu,3,3,1,0.4385029644,1

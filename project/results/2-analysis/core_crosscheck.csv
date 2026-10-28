@@ -1,0 +1,6 @@
+id,topik,pertanyaan,status,baris_asisten,baris_view,sama,generated_sql
+C1,yield per stasiun,Berapa FPY per stasiun?,ok,10,10,1,"SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily GROUP BY station ORDER BY station"
+C2,Pareto defect,Berapa total defect menurut nama defect?,ok,20,20,1,"SELECT x.defect_name, SUM(qty) AS defect FROM defect_log d JOIN dim_defect x ON x.defect_code = d.defect_code GROUP BY x.defect_name ORDER BY x.defect_name"
+C3,tren NG rate mingguan,Berapa NG rate per minggu?,ok,1,15,0,SELECT SUM(ng_qty) * 1.0 / SUM(input_qty) AS ng_rate FROM production_daily
+C4,RTY per model,Berapa RTY per model?,ok,1,3,0,"WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f"
+C5,FPY satu stasiun per shift,Berapa FPY Frame Painting per shift?,ok,2,2,1,"SELECT shift, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily WHERE station = 'Frame Painting' GROUP BY shift ORDER BY shift"

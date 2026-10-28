@@ -1,0 +1,4 @@
+config,rata_komponen_lokal_ms,maks_komponen_lokal_ms,asumsi_llm_detik,total_asumsi_detik,manual_menit,rasio_manual_vs_asisten
+tanpa_skema,100,100,3,3.1,15,290.3225806
+skema,100,100,3,3.1,15,290.3225806
+skema_kpi,100,100,3,3.1,15,290.3225806

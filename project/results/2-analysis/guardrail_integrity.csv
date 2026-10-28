@@ -1,0 +1,5 @@
+tabel,baris_sebelum,baris_sesudah,checksum_sama
+production_daily,4500,4500,1
+defect_log,5874,5874,1
+dim_defect,20,20,1
+dim_station,10,10,1
