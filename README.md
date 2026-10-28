@@ -18,9 +18,9 @@
 Bagaimana orang non-teknis bisa bertanya data produksi dengan bahasa biasa dan mendapat angka yang benar dari database tanpa menulis SQL, dan seberapa akurat jawabannya dibanding SQL tulisan manual?
 
 ## 2. Data
-Data produksi simulasi dibuat oleh `scripts/generate_data.py` (seed tetap). Hasil v1: 4.500 baris produksi harian dan 6.510 baris defect. Golden set 30 pertanyaan dan red-team set ±15 permintaan berbahaya disusun manual. Hanya skema yang dikirim ke LLM API, bukan isi data.
+Data produksi simulasi dibuat oleh `scripts/generate_data.py` (seed tetap). Hasil v2: 4.500 baris produksi, 5.874 baris defect.
 
-Versi data: v1. Tanggal dibuat: 28 Okt 2026. Seed: 21260302. Generator: `scripts/generate_data.py`. Hasil v1: 4.500 baris produksi, 6.510 baris defect.
+Versi data: v2. Tanggal dibuat: 28 Okt 2026. Seed: 21260302. Generator: `scripts/generate_data.py`.
 
 ## 3. Analysis
 Rencana: execution accuracy per tipe pertanyaan dan konfigurasi prompt, uji guardrail, analisis pola kegagalan, latency dan biaya. Belum dikerjakan.
