@@ -18,7 +18,8 @@ comp = G.groupby("type").agg(pertanyaan=("question_id", "size"), indonesia=("lan
 comp = comp.set_index("type").loc[["agregasi", "filter tanggal", "join", "definisi KPI", "ambigu"]].reset_index()
 comp.to_csv(CM.RES2 / "golden_composition.csv", index=False)
 
-p = pd.read_csv(CM.SIM / "production_daily.csv", parse_dates=["date"]); d = pd.read_csv(CM.SIM / "defect_log.csv", parse_dates=["date"])
+p = pd.read_csv(CM.SIM / "production_daily.csv", parse_dates=["date"]); p = p[(p.input_qty > 0) & (p.ng_qty >= 0) & (p.ok_first_pass >= 0) & (p.ng_qty <= p.input_qty) & (p.ok_first_pass + p.ng_qty == p.input_qty)]   # baris bersih (aturan v_production)
+d = pd.read_csv(CM.SIM / "defect_log.csv", parse_dates=["date"])
 dd = pd.read_csv(CM.SIM / "dim_defect.csv"); ds = pd.read_csv(CM.SIM / "dim_station.csv")
 D = lambda s: pd.Timestamp(s)
 fr = lambda **k: pd.DataFrame(k)
@@ -39,15 +40,15 @@ PD = {
     "G05": lambda: p.groupby("station").ng_qty.sum().reset_index(), "G06": lambda: d.groupby("model").qty.sum().reset_index(),
     "G07": lambda: p.groupby("station").ng_qty.sum().sort_values(ascending=False, kind="stable").head(1).reset_index(), "G08": lambda: fr(v=[p.date.nunique()]),
     "G09": lambda: fr(v=[p[(p.station == "Engine Assembly") & (p.date >= D("2026-06-08")) & (p.date <= D("2026-06-14"))].ng_qty.sum()]),
-    "G10": lambda: fr(v=[p[(p.station == "Packing") & (p.date.dt.month == 5)].input_qty.sum()]), "G11": lambda: fr(v=[p[(p.station == "Frame Welding") & (p.date.dt.month == 4)].ng_qty.sum()]),
+    "G10": lambda: fr(v=[p[(p.station == "Packaging") & (p.date.dt.month == 5)].input_qty.sum()]), "G11": lambda: fr(v=[p[(p.station == "Frame Welding") & (p.date.dt.month == 4)].ng_qty.sum()]),
     "G12": lambda: fr(v=[d[d.date == D("2026-04-15")].qty.sum()]), "G13": lambda: fr(v=[p[(p["shift"] == "Shift 2") & (p.date >= D("2026-05-01")) & (p.date <= D("2026-05-15"))].ng_qty.sum()]),
-    "G14": lambda: fr(v=[p[(p.date.dt.month == 6) & (p.date <= D("2026-06-17"))].ng_qty.sum()]), "G15": lambda: fr(v=[p[(p.station == "Wheel & Suspension") & (p.date.dt.month == 5)].input_qty.sum()]),
+    "G14": lambda: fr(v=[p[(p.date.dt.month == 6) & (p.date <= D("2026-06-17"))].ng_qty.sum()]), "G15": lambda: fr(v=[p[(p.station == "Wheel & Suspension Assembly") & (p.date.dt.month == 5)].input_qty.sum()]),
     "G16": lambda: fr(v=[dj[dj.category == "Las"].qty.sum()]), "G17": lambda: dj.groupby("defect_name").qty.sum().sort_values(ascending=False, kind="stable").head(1).reset_index(),
     "G18": lambda: dj[dj.station == "Frame Painting"].groupby("defect_name").qty.sum().reset_index(), "G19": lambda: fr(v=[dj[(dj.category == "Cat") & (dj.model == "Sport 150")].qty.sum()]),
     "G20": lambda: dj[dj.category == "Kelistrikan"].groupby("station").qty.sum().reset_index(), "G21": lambda: p.groupby("station").ng_qty.sum().reset_index(),
     "G22": lambda: fr(v=[fpy(p[p.station == "Engine Assembly"])]), "G23": lambda: p.groupby("station").apply(fpy, include_groups=False).sort_values(kind="stable").head(1).reset_index(),
     "G24": lambda: p.groupby("model").apply(lambda x: x.ng_qty.sum() / x.input_qty.sum(), include_groups=False).reset_index(), "G25": lambda: fr(v=[rty(p[p.model == "Bebek 125"])]),
-    "G26": lambda: fr(v=[d[d.station == "Body Panel Assembly"].qty.sum() * 1000 / p[p.station == "Body Panel Assembly"].input_qty.sum()]), "G27": lambda: fr(v=[rty(p)])}
+    "G26": lambda: fr(v=[d[d.station == "Main Line Assembly"].qty.sum() * 1000 / p[p.station == "Main Line Assembly"].input_qty.sum()]), "G27": lambda: fr(v=[rty(p)])}
 con = A.open_readonly()
 cx, ref_rows = [], []
 for q in gold:

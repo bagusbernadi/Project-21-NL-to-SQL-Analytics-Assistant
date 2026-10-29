@@ -3,27 +3,27 @@
   type: agregasi
   language: id
   question: Berapa total unit yang masuk Engine Assembly selama seluruh periode?
-  reference_sql: SELECT SUM(input_qty) AS total_input FROM production_daily WHERE station = 'Engine Assembly'
+  reference_sql: SELECT SUM(input_qty) AS total_input FROM v_production WHERE station = 'Engine Assembly'
 - question_id: G02
   type: agregasi
   language: id
   question: Berapa total NG di Frame Painting?
-  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE station = 'Frame Painting'
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM v_production WHERE station = 'Frame Painting'
 - question_id: G03
   type: agregasi
   language: en
   question: How many units passed first pass at Final Inspection in total?
-  reference_sql: SELECT SUM(ok_first_pass) AS total_ok FROM production_daily WHERE station = 'Final Inspection'
+  reference_sql: SELECT SUM(ok_first_pass) AS total_ok FROM v_production WHERE station = 'Final Inspection'
 - question_id: G04
   type: agregasi
   language: id
   question: Berapa rata-rata jumlah input per catatan untuk model Sport 150?
-  reference_sql: SELECT AVG(input_qty) AS avg_input FROM production_daily WHERE model = 'Sport 150'
+  reference_sql: SELECT AVG(input_qty) AS avg_input FROM v_production WHERE model = 'Sport 150'
 - question_id: G05
   type: agregasi
   language: en
   question: What is the total NG quantity per station?
-  reference_sql: SELECT station, SUM(ng_qty) AS total_ng FROM production_daily GROUP BY station ORDER BY station
+  reference_sql: SELECT station, SUM(ng_qty) AS total_ng FROM v_production GROUP BY station ORDER BY station
 - question_id: G06
   type: agregasi
   language: id
@@ -33,27 +33,27 @@
   type: agregasi
   language: en
   question: Which station has the highest total NG quantity?
-  reference_sql: SELECT station, SUM(ng_qty) AS total_ng FROM production_daily GROUP BY station ORDER BY total_ng DESC, station LIMIT 1
+  reference_sql: SELECT station, SUM(ng_qty) AS total_ng FROM v_production GROUP BY station ORDER BY total_ng DESC, station LIMIT 1
 - question_id: G08
   type: agregasi
   language: id
   question: Berapa jumlah hari produksi di data?
-  reference_sql: SELECT COUNT(DISTINCT date) AS hari_produksi FROM production_daily
+  reference_sql: SELECT COUNT(DISTINCT date) AS hari_produksi FROM v_production
 - question_id: G09
   type: filter tanggal
   language: id
   question: Berapa total NG Engine Assembly minggu lalu?
-  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-08' AND DATE '2026-06-14'
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM v_production WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-08' AND DATE '2026-06-14'
 - question_id: G10
   type: filter tanggal
   language: id
-  question: Berapa total input produksi di Packing pada bulan Mei 2026?
-  reference_sql: SELECT SUM(input_qty) AS total_input FROM production_daily WHERE station = 'Packing' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+  question: Berapa total input produksi di Packaging pada bulan Mei 2026?
+  reference_sql: SELECT SUM(input_qty) AS total_input FROM v_production WHERE station = 'Packaging' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
 - question_id: G11
   type: filter tanggal
   language: en
   question: How many NG units were recorded at Frame Welding in April 2026?
-  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE station = 'Frame Welding' AND date >= DATE '2026-04-01' AND date < DATE '2026-05-01'
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM v_production WHERE station = 'Frame Welding' AND date >= DATE '2026-04-01' AND date < DATE '2026-05-01'
 - question_id: G12
   type: filter tanggal
   language: id
@@ -63,17 +63,17 @@
   type: filter tanggal
   language: en
   question: What is the total NG on Shift 2 between 2026-05-01 and 2026-05-15?
-  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE shift = 'Shift 2' AND date BETWEEN DATE '2026-05-01' AND DATE '2026-05-15'
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM v_production WHERE shift = 'Shift 2' AND date BETWEEN DATE '2026-05-01' AND DATE '2026-05-15'
 - question_id: G14
   type: filter tanggal
   language: id
   question: Berapa total NG seluruh lini bulan ini?
-  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM production_daily WHERE date >= DATE '2026-06-01' AND date <= DATE '2026-06-17'
+  reference_sql: SELECT SUM(ng_qty) AS total_ng FROM v_production WHERE date >= DATE '2026-06-01' AND date <= DATE '2026-06-17'
 - question_id: G15
   type: filter tanggal
   language: en
-  question: What was the total input at Wheel & Suspension last month?
-  reference_sql: SELECT SUM(input_qty) AS total_input FROM production_daily WHERE station = 'Wheel & Suspension' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+  question: What was the total input at Wheel & Suspension Assembly last month?
+  reference_sql: SELECT SUM(input_qty) AS total_input FROM v_production WHERE station = 'Wheel & Suspension Assembly' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
 - question_id: G16
   type: join
   language: id
@@ -103,37 +103,37 @@
   type: join
   language: en
   question: List the stations in production order with their total NG quantity.
-  reference_sql: SELECT s.station, SUM(p.ng_qty) AS total_ng FROM production_daily p JOIN dim_station s ON s.station = p.station GROUP BY s.station, s.seq ORDER BY s.seq
+  reference_sql: SELECT s.station, SUM(p.ng_qty) AS total_ng FROM v_production p JOIN dim_station s ON s.station = p.station GROUP BY s.station, s.seq ORDER BY s.seq
 - question_id: G22
   type: definisi KPI
   language: id
   question: Berapa FPY Engine Assembly?
-  reference_sql: SELECT SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily WHERE station = 'Engine Assembly'
+  reference_sql: SELECT SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM v_production WHERE station = 'Engine Assembly'
 - question_id: G23
   type: definisi KPI
   language: en
   question: Which station has the lowest FPY?
-  reference_sql: SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily GROUP BY station ORDER BY fpy, station LIMIT 1
+  reference_sql: SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM v_production GROUP BY station ORDER BY fpy, station LIMIT 1
 - question_id: G24
   type: definisi KPI
   language: id
   question: Berapa NG rate per model?
-  reference_sql: SELECT model, SUM(ng_qty) * 1.0 / SUM(input_qty) AS ng_rate FROM production_daily GROUP BY model ORDER BY model
+  reference_sql: SELECT model, SUM(ng_qty) * 1.0 / SUM(input_qty) AS ng_rate FROM v_production GROUP BY model ORDER BY model
 - question_id: G25
   type: definisi KPI
   language: en
   question: What is the RTY of the line for Bebek 125?
-  reference_sql: WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily WHERE model = 'Bebek 125' GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f
+  reference_sql: WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM v_production WHERE model = 'Bebek 125' GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f
 - question_id: G26
   type: definisi KPI
   language: id
-  question: Berapa defect per 1.000 unit di Body Panel Assembly?
-  reference_sql: SELECT (SELECT SUM(qty) FROM defect_log WHERE station = 'Body Panel Assembly') * 1000.0 / (SELECT SUM(input_qty) FROM production_daily WHERE station = 'Body Panel Assembly') AS defect_per_1000
+  question: Berapa defect per 1.000 unit di Main Line Assembly?
+  reference_sql: SELECT (SELECT SUM(qty) FROM defect_log WHERE station = 'Main Line Assembly') * 1000.0 / (SELECT SUM(input_qty) FROM v_production WHERE station = 'Main Line Assembly') AS defect_per_1000
 - question_id: G27
   type: definisi KPI
   language: en
   question: What is the overall yield of the line?
-  reference_sql: WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM production_daily GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f
+  reference_sql: WITH f AS (SELECT station, SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS fpy FROM v_production GROUP BY station) SELECT EXP(SUM(LN(fpy))) AS rty FROM f
 - question_id: G28
   type: ambigu
   language: id

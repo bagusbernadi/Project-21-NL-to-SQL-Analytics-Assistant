@@ -4,5 +4,7 @@ CREATE TABLE dim_defect (defect_code VARCHAR PRIMARY KEY, defect_name VARCHAR NO
 CREATE TABLE production_daily (
     date DATE NOT NULL, shift VARCHAR NOT NULL, station VARCHAR NOT NULL, model VARCHAR NOT NULL, operator_id VARCHAR NOT NULL,
     input_qty INTEGER NOT NULL, ok_first_pass INTEGER NOT NULL, ng_qty INTEGER NOT NULL);
+CREATE TABLE rework_log (
+    rework_id VARCHAR PRIMARY KEY, date_in DATE NOT NULL, date_out DATE NOT NULL, station_origin VARCHAR NOT NULL, model VARCHAR NOT NULL, defect_code VARCHAR NOT NULL, result VARCHAR NOT NULL);
 CREATE TABLE defect_log (
     date DATE NOT NULL, shift VARCHAR NOT NULL, station VARCHAR NOT NULL, model VARCHAR NOT NULL, defect_code VARCHAR NOT NULL, qty INTEGER NOT NULL);

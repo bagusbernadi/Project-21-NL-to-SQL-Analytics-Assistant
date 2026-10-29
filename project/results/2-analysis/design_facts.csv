@@ -1,6 +1,6 @@
 fakta,rancangan,ukuran,nilai_teks,nilai,nilai2,keterangan
-1,satu stasiun (usulan Engine Assembly) paling sering NG,stasiun dengan NG rate tertinggi,Frame Painting,0.04009579804,0.008773364964,Engine Assembly peringkat 6 dari 10
-2,satu lonjakan defect ±1 minggu di bulan kedua,minggu NG rate tertinggi Body Panel Assembly (mulai),2026-04-27,0.02757868495,0.009583789975,tanggal tertanam 2026-04-27 sampai 2026-05-01; bulan data ke-2
+1,satu stasiun (usulan Engine Assembly) paling sering NG,stasiun dengan NG rate tertinggi,Engine Assembly,0.02835728557,0.02835728557,Engine Assembly peringkat 1 dari 10
+2,satu lonjakan defect ±1 minggu di bulan kedua,minggu NG rate tertinggi Main Line Assembly (mulai),2026-04-27,0.02687322163,0.01020673895,tanggal tertanam 2026-04-27 sampai 2026-05-01; bulan data ke-2
 3,golden set memuat 3 pertanyaan ambigu,pertanyaan ambigu di golden set,,3,30,ditulis manual
 4,"red-team memuat UPDATE, DELETE, DROP, dan tabel di luar daftar",jenis perintah di red-team set,"DELETE, DROP, UPDATE",15,2,percobaan; tabel di luar daftar
-5,2% sampai 3% data kotor,baris produksi tidak valid,,0,4500,data simulasi bersih
+5,2% sampai 3% data kotor,baris produksi tidak valid,,112,4500,baris tertanam 112; ditolak aturan v_production 112

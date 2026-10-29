@@ -29,7 +29,7 @@ CONFIG_LABEL = {"tanpa_skema": "Tanpa skema", "skema": "Skema", "skema_kpi": "Sk
 TODAY = "2026-06-17"               # ASUMSI: tanggal acuan "hari ini" (Rabu) untuk "minggu lalu", "bulan ini", "kemarin"
 AUTO_LIMIT = 1000                  # ASUMSI: LIMIT otomatis bila query tidak punya LIMIT
 TIMEOUT_S = 5.0                    # ASUMSI: batas waktu eksekusi query
-ALLOWED_TABLES = ["production_daily", "defect_log", "dim_defect", "dim_station",
+ALLOWED_TABLES = ["production_daily", "defect_log", "rework_log", "dim_defect", "dim_station",
                   "v_production", "v_kpi_station", "v_kpi_station_shift", "v_pareto_defect", "v_trend_week", "v_rty_model"]
 CHARS_PER_TOKEN = 4.0              # ASUMSI: perkiraan token = panjang teks / 4
 PRICE_IN_PER_M, PRICE_OUT_PER_M = 3.0, 15.0   # ASUMSI: USD per juta token (bukan harga resmi model mana pun)

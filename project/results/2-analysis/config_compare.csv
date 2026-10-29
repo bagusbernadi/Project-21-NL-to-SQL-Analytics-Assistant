@@ -1,4 +1,4 @@
 konfigurasi_a,konfigurasi_b,benar_hanya_a,benar_hanya_b,selisih_akurasi,p_mcnemar_eksak
-tanpa_skema,skema,0,19,0.6333333333,3.814697266e-06
-skema,skema_kpi,0,10,0.3333333333,0.001953125
+tanpa_skema,skema,0,8,0.2666666667,0.0078125
+skema,skema_kpi,0,21,0.7,9.536743164e-07
 tanpa_skema,skema_kpi,0,29,0.9666666667,3.725290298e-09

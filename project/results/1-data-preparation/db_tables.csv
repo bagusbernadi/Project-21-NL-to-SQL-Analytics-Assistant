@@ -2,8 +2,9 @@ objek,baris
 dim_station,10
 dim_defect,20
 production_daily,4500
-defect_log,5874
-v_production,4500
+defect_log,5728
+rework_log,8702
+v_production,4388
 v_kpi_station,10
 v_pareto_defect,20
 v_trend_week,15

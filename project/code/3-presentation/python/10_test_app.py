@@ -11,7 +11,7 @@ import common as CM
 APP = CM.ROOT / "code" / "3-presentation" / "streamlit" / "app.py"
 acc = pd.read_csv(CM.RES2 / "accuracy_config.csv").set_index("config"); gs = pd.read_csv(CM.RES2 / "guardrail_summary.csv").iloc[0]
 con = A.open_readonly()
-ref_ng = int(con.execute("SELECT SUM(ng_qty) FROM production_daily WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-08' AND DATE '2026-06-14'").fetchone()[0])
+ref_ng = int(con.execute("SELECT SUM(ng_qty) FROM v_production WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-08' AND DATE '2026-06-14'").fetchone()[0])
 low = con.execute("SELECT station FROM v_kpi_station ORDER BY fpy LIMIT 1").fetchone()[0]
 res = {}
 at = AppTest.from_file(str(APP), default_timeout=90).run()

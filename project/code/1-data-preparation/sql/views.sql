@@ -3,7 +3,7 @@ CREATE VIEW v_production AS
 SELECT date, shift, station, model, input_qty, ok_first_pass, ng_qty,
        ok_first_pass * 1.0 / input_qty AS fpy, ng_qty * 1.0 / input_qty AS ng_rate
 FROM production_daily
-WHERE input_qty > 0 AND ng_qty >= 0 AND ok_first_pass + ng_qty = input_qty;
+WHERE input_qty > 0 AND ng_qty >= 0 AND ok_first_pass >= 0 AND ng_qty <= input_qty AND ok_first_pass + ng_qty = input_qty;
 
 CREATE VIEW v_kpi_station AS
 SELECT s.seq, p.station, SUM(p.input_qty) AS input_qty, SUM(p.ok_first_pass) AS ok_first_pass, SUM(p.ng_qty) AS ng_qty,

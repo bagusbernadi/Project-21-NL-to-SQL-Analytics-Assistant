@@ -78,7 +78,7 @@ jam hemat per bulan = pertanyaan per bulan x akurasi x menit manual per query / 
 - **Data adalah simulasi**; angka menggambarkan simulasi, bukan lini produksi.
 - **Penulis SQL adalah pengganti aturan lokal, bukan Claude**; akurasi, latency LLM, dan biaya bukan pengukuran model nyata. Latency API (3 detik), harga token, token per teks, menit manual, dan volume pertanyaan adalah asumsi.
 - Golden set kecil (30 pertanyaan) dan ditulis oleh orang yang sama dengan stand-in; akurasi cenderung optimistis.
-- Fakta data rancangan hanya sebagian ditanam: stasiun terburuk Frame Painting (bukan Engine Assembly), tidak ada data kotor 2 sampai 3%, tidak ada tabel rework_log.
+- Kelima fakta data rancangan ditanam dan terdeteksi; generator, golden set, stand-in, dan guardrail ditulis oleh orang yang sama, jadi hasil optimistis.
 - Aplikasi belum di-deploy (diuji AppTest: {I((at.hasil == 'lulus').sum())} dari {I(len(at))} lulus); success criteria "orang awam dalam 1 menit" belum diuji; Docker dan slide tidak dibuat; branch belum di-merge ke main.
 - Cek silang: {I(cx.cocok.sum())} dari {I(cx.dibandingkan.sum())} cocok; pytest {I((pt.hasil == 'lulus').sum())} dari {I(len(pt))} lulus.
 

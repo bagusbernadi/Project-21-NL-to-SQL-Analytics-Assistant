@@ -96,8 +96,8 @@ ANS = {
         f"Tanpa guardrail, koneksi read-only saja menolak {I(gs.ditolak_read_only_saja)} dari {I(gs.percobaan)} (SELECT berbahaya seperti membaca file masih lolos); dengan akses file dimatikan {I(gs.ditolak_akses_file_mati)} dari {I(gs.percobaan)}. Red-team set ditulis penulis yang sama dengan guardrail."),
     6: (f"Pada skema + KPI, {I(qlim.loc['skema_kpi', 'limit_otomatis'])} dari {I(qlim.loc['skema_kpi', 'query_dijalankan'])} query dijalankan kena LIMIT otomatis ({P(qlim.loc['skema_kpi', 'limit_otomatis'] / qlim.loc['skema_kpi', 'query_dijalankan'], 1)}); hasil terpotong {I(qlim.loc['skema_kpi', 'terpotong'])} dan timeout {I(qlim.loc['skema_kpi', 'timeout'])}. "
         f"Uji beban terpisah: query berat kena timeout {D(C.TIMEOUT_S, 0)} detik dan SELECT tanpa LIMIT terpotong di {I(gload.baris.max())} baris. LIMIT dan timeout adalah asumsi (docs/definitions.md)."),
-    7: (f"Skema + KPI: {I(fc('skema_kpi', 'SQL error'))} SQL error dan {I(fc('skema_kpi', 'hasil salah'))} hasil salah. Skema saja: {I(fc('skema', 'hasil salah'))} hasil salah (definisi KPI dan kalender), {I(fc('skema', 'ambigu tidak diklarifikasi'))} ambigu tidak diklarifikasi, {I(fc('skema', 'SQL error'))} SQL error. "
-        f"Tanpa skema: {I(n_blocked_noschema)} diblokir guardrail karena nama tabel tebakan tidak ada di daftar, dan {I(fc('tanpa_skema', 'ambigu tidak diklarifikasi'))} ambigu tidak diklarifikasi. Pola utama: query jalan tetapi hasil salah akibat definisi, bukan SQL error. Pola ditentukan aturan stand-in."),
+    7: (f"Skema + KPI: {I(fc('skema_kpi', 'SQL error'))} SQL error dan {I(fc('skema_kpi', 'hasil salah'))} hasil salah. Skema saja: {I(fc('skema', 'hasil salah'))} hasil salah (definisi KPI, kalender, dan baris kotor karena production_daily dipakai langsung), {I(fc('skema', 'ambigu tidak diklarifikasi'))} ambigu tidak diklarifikasi, {I(fc('skema', 'SQL error'))} SQL error. "
+        f"Tanpa skema: {I(n_blocked_noschema)} diblokir guardrail karena nama tabel tebakan tidak ada di daftar, dan {I(fc('tanpa_skema', 'ambigu tidak diklarifikasi'))} ambigu tidak diklarifikasi. Pola utama: query jalan tetapi hasil salah (definisi KPI, kalender, baris kotor), bukan SQL error. Pola ditentukan aturan stand-in."),
     8: (f"Pada skema + KPI, {I(clar.loc['skema_kpi', 'diklarifikasi'])} dari {I(clar.loc['skema_kpi', 'ambigu'])} pertanyaan ambigu diminta klarifikasi dan {I(clar.loc['skema_kpi', 'klarifikasi_pada_pertanyaan_jelas'])} pertanyaan jelas salah dikira ambigu. Pada skema saja dan tanpa skema: {I(clar.loc['skema', 'diklarifikasi'])} dari {I(clar.loc['skema', 'ambigu'])} (menebak). "
         f"Perilaku ini ditentukan instruksi klarifikasi yang hanya ada di konfigurasi skema + KPI; hanya {I(clar.loc['skema_kpi', 'ambigu'])} pertanyaan ambigu."),
     9: (f"Komponen lokal (stand-in, guardrail, database) selesai dalam kelas {I(lat.loc['skema_kpi', 'maks_komponen_lokal_ms'])} ms. Dengan asumsi latency API LLM {I(lat.loc['skema_kpi', 'asumsi_llm_detik'])} detik (tidak diukur), total sekitar {D(lat.loc['skema_kpi', 'total_asumsi_detik'], 1)} detik dibanding {I(lat.loc['skema_kpi', 'manual_menit'])} menit query manual (asumsi); rasio sekitar {D(lat.loc['skema_kpi', 'rasio_manual_vs_asisten'], 0)} kali. Latency LLM nyata belum diukur."),
@@ -171,10 +171,11 @@ REP.append('<h2 id="rp1">1. Data yang berhasil didapatkan<small>Isi data mentah,
 REP.append('<div class="kpis">' + kp(I(dbt["production_daily"]), "baris produksi", "10 stasiun, 3 model, 2 shift.", "navyH") + kp(I(dbt["defect_log"]), "baris defect", "20 kode defect.", "tealH")
            + kp(I(gcomp.pertanyaan.sum()), "pertanyaan golden set", "5 tipe, dua bahasa.", "amberH") + kp(I(len(rt)), "percobaan red-team", "UPDATE, DELETE, DROP, tabel luar daftar.", "plumH")
            + kp(I(n_cx), "cek silang", f"{I(n_cx_ok)} cocok.", "roseH") + kp(I(n_fp_ok), "sidik jari cocok", f"Dari {I(n_fp)} berkas, dicocokkan dengan repo DataCenter.", "skyH") + '</div>')
+f1, f2, f3, f4, f5 = (fct.loc[i] for i in (1, 2, 3, 4, 5))
 REP.append('<h3>1.1 Data mentah</h3><div class="card"><p>Tabel 1.1a: lima baris pertama production_daily (data simulasi).</p>'
            + table(["Tanggal", "Shift", "Stasiun", "Model", "Operator", "Input", "OK pertama", "NG"], [[r.date, r["shift"], r.station, r.model, r.operator_id, I(r.input_qty), I(r.ok_first_pass), I(r.ng_qty)] for _, r in prod_head.iterrows()])
-           + '<p>Tabel 1.1b: kualitas data. Data simulasi bersih, tidak ada nilai kosong atau baris tidak valid.</p>'
-           + table(["Pemeriksaan", "Hasil"], [["Baris production_daily", I(dbt["production_daily"])], ["Baris lolos view v_production", I(dbt["v_production"])], ["Baris tidak valid", I(fct.loc[5, "nilai"])]]) + '</div>')
+           + f'<p>Tabel 1.1b: kualitas data. {P(f5.nilai / f5.nilai2, 1)} baris production_daily sengaja dikotori (input nol, NG negatif atau melebihi input, OK + NG tidak sama dengan input); view v_production menyaringnya.</p>'
+           + table(["Pemeriksaan", "Hasil"], [["Baris production_daily", I(dbt["production_daily"])], ["Baris lolos view v_production", I(dbt["v_production"])], ["Baris tidak valid (ditolak view)", I(fct.loc[5, "nilai"])], ["Baris rework_log", I(dbt["rework_log"])]]) + '</div>')
 FILES = {
     "accuracy_config.csv": "execution accuracy per konfigurasi", "accuracy_language.csv": "akurasi per bahasa", "accuracy_type.csv": "akurasi per tipe pertanyaan", "clarification.csv": "klarifikasi pertanyaan ambigu",
     "config_compare.csv": "perbandingan konfigurasi (McNemar)", "core_crosscheck.csv": "lima pertanyaan inti vs view KPI", "cost.csv": "biaya per 100 pertanyaan (estimated)", "crosscheck.csv": "cek silang SQL, view, pandas",
@@ -206,13 +207,13 @@ REP.append('<div class="card"><p class="how">Tabel 3a. Rancangan dan realisasi d
            + table(["Hal", "Rancangan", "Realisasi", "Verdict"], [
                ["Sumber data", "simulasi buatan sendiri dari scripts/generate_data.py", f"00_generate_data.py (seed tetap), dibuat ulang dan dicocokkan dengan sidik jari repo DataCenter ({I(n_fp_ok)} dari {I(n_fp)} berkas)", pill("Sesuai", "")],
                ["Ukuran", "±4.500 baris produksi, ±6.000 baris defect, golden set 30, red-team ±15", f"{I(dbt['production_daily'])} baris produksi, {I(dbt['defect_log'])} baris defect, golden set {I(gcomp.pertanyaan.sum())}, red-team {I(len(rt))}", pill("Sesuai", "")],
-               ["Tabel", "production_daily, defect_log, rework_log, dim_defect, golden_set, query_log", "rework_log tidak ada (generator tidak membuatnya); dim_station tambahan; golden_set dan query_log di evaluation.duckdb", pill("Sesuai + penyesuaian", "p")],
-               ["Stasiun dan model", "10 stasiun dengan nama tertentu; model Matic, Bebek, Sport", "10 stasiun dengan sebagian nama berbeda (mis. Wiring Harness Install, Performance Test (Dyno)); model Matic 110, Bebek 125, Sport 150", pill("Sesuai + penyesuaian", "p")],
-               ["Fakta 1: satu stasiun (Engine Assembly) paling sering NG", "Engine Assembly", f"{f1.nilai_teks} paling tinggi ({P(f1.nilai, 2)}); {f1.keterangan} ({P(f1.nilai2, 2)})", pill("Berubah", "d")],
-               ["Fakta 2: lonjakan defect ±1 minggu di bulan kedua", "satu lonjakan ±1 minggu", f"lonjakan Body Panel Assembly mulai {f2.nilai_teks} (bulan data ke-{I(2)}), NG rate mingguan {P(f2.nilai, 2)} dibanding median {P(f2.nilai2, 2)}", pill("Sesuai", "")],
+               ["Tabel", "production_daily, defect_log, rework_log, dim_defect, golden_set, query_log", f"production_daily, defect_log, rework_log ({I(dbt['rework_log'])} baris), dim_defect; dim_station tambahan; golden_set dan query_log di evaluation.duckdb", pill("Sesuai + penyesuaian", "p")],
+               ["Stasiun dan model", "10 stasiun dengan nama tertentu; model Matic, Bebek, Sport", "10 stasiun dengan nama dan urutan sama dengan rancangan; model Matic 110, Bebek 125, Sport 150", pill("Sesuai", "")],
+               ["Fakta 1: satu stasiun (Engine Assembly) paling sering NG", "Engine Assembly", f"{f1.nilai_teks} paling tinggi ({P(f1.nilai, 2)}); {f1.keterangan} ({P(f1.nilai2, 2)})", pill("Sesuai", "") if f1.nilai_teks == "Engine Assembly" else pill("Berubah", "d")],
+               ["Fakta 2: lonjakan defect ±1 minggu di bulan kedua", "satu lonjakan ±1 minggu", f"lonjakan Main Line Assembly mulai {f2.nilai_teks} (bulan data ke-{I(2)}), NG rate mingguan {P(f2.nilai, 2)} dibanding median {P(f2.nilai2, 2)}", pill("Sesuai", "")],
                ["Fakta 3: 3 pertanyaan ambigu di golden set", "3 pertanyaan", f"{I(f3.nilai)} dari {I(f3.nilai2)} pertanyaan bertipe ambigu", pill("Sesuai", "")],
                ["Fakta 4: red-team memuat UPDATE, DELETE, DROP, tabel luar daftar", "empat jenis perintah", f"{I(f4.nilai)} percobaan; jenis: {f4.nilai_teks}; {I(f4.nilai2)} percobaan tabel di luar daftar", pill("Sesuai", "")],
-               ["Fakta 5: 2% sampai 3% data kotor", "data kotor tetap ada", f"{I(f5.nilai)} baris tidak valid dari {I(f5.nilai2)}; data bersih", pill("Berubah", "d")],
+               ["Fakta 5: 2% sampai 3% data kotor", "data kotor tetap ada", f"{I(f5.nilai)} baris tidak valid dari {I(f5.nilai2)} ({P(f5.nilai / f5.nilai2, 1)}); semuanya ditolak view v_production", pill("Sesuai", "")],
                ["Efek tertanam tambahan", "tidak ada di rancangan", f"NG rate Frame Painting Shift 2 {D(gx.nilai[0], 2)} kali Shift 1 (tertanam {D(gx.tertanam[0], 1)}); Sport 150 {D(gx.nilai[1], 2)} kali Matic 110 (tertanam {D(gx.tertanam[1], 2)})", pill("Tambahan", "")],
                ["Hipotesis", "tidak ada hipotesis formal pada rancangan", "lima fakta data di atas diperlakukan sebagai klaim yang diuji", pill("Tidak berlaku", "d")]]) + '</div>')
 
@@ -250,7 +251,8 @@ REP.append('<div class="card"><p class="how">Tabel 5a. Dua belas langkah rancang
                ["Koneksi read-only dengan akses file mati dan uji dua lapis", "read-only saja tidak mencegah baca file; ditemukan lewat uji tanpa guardrail"],
                ["Latency kelas 100 ms, API 3 detik, harga dan token asumsi", "hasil run ulang harus identik; LLM nyata tidak diukur"],
                ["Daftar lima pertanyaan inti", "rancangan menyebut sebagian saja (yield per stasiun, Pareto defect, tren)"],
-               ["Stand-in dibekukan setelah hasil pertama", "mencegah penyetelan aturan agar akurasi naik"]])
+               ["Stand-in dibekukan setelah hasil pertama", "mencegah penyetelan aturan agar akurasi naik"],
+               ["Data v3 dan perubahan satu aturan stand-in", "setelah data kotor, tabel rework_log, dan nama stasiun rancangan ditambahkan (v3), konfigurasi skema + KPI memakai view v_production karena dokumentasi KPI menyebut production_daily kotor; aturan lain tidak diubah dan dibekukan lagi, golden set memakai view bersih sebagai jawaban benar"]])
            + '<p>Tabel 5c: perubahan nama dan lokasi file terhadap rancangan.</p>' + table(["Rancangan", "Realisasi"], rn_rows) + '</div>')
 docs_list = [(a, d[0] if d else "", c) for a, d, c in RENAMES if a != "index.html"]
 
@@ -297,12 +299,12 @@ REP.append('<h4>7.4 Rekomendasi</h4><div class="card"><ul class="tight">'
            '<li>Verifikasi angka kritis dengan view KPI sebelum dipakai untuk keputusan.</li></ul></div>')
 REP.append('<h4>7.5 Saran perbaikan</h4><div class="card"><ul class="tight">'
            '<li>Uji dengan Claude API dan golden set yang disusun oleh orang lain, lalu perbesar golden set di atas 30 pertanyaan.</li><li>Tambahkan dukungan pengelompokan mingguan dan RTY per model, serta pertanyaan lanjutan.</li>'
-           '<li>Deploy aplikasi dan uji ke pembaca awam (kriteria 1 menit); ukur latency API dan token sebenarnya.</li><li>Tambahkan tabel rework_log dan data kotor ke generator agar fakta rancangan terpenuhi.</li></ul></div>')
+           '<li>Deploy aplikasi dan uji ke pembaca awam (kriteria 1 menit); ukur latency API dan token sebenarnya.</li><li>Uji dengan data pabrik nyata yang punya baris kotor dan definisi KPI sendiri.</li></ul></div>')
 REP.append('<h4>7.6 Batasan</h4><div class="card"><ul class="tight">'
            '<li><b>Data adalah simulasi;</b> angka menggambarkan simulasi, bukan lini produksi.</li>'
            f'<li><b>Penulis SQL adalah pengganti aturan lokal, bukan Claude.</b> Akurasi ({P(a3.akurasi, 1)}, {P(a2.akurasi, 1)}, {P(a1.akurasi, 1)}), klarifikasi, dan pola kegagalan ditentukan aturan stand-in; latency API, token, harga, menit manual, dan volume adalah asumsi.</li>'
            f'<li>Golden set kecil ({I(a3.n)} pertanyaan; batas bawah CI {P(a3.ci_low, 1)}) dan ditulis oleh orang yang sama dengan stand-in dan guardrail; hasil optimistis. Red-team set hanya {I(len(rt))} percobaan.</li>'
-           f'<li>Fakta data rancangan hanya sebagian ditanam: stasiun terburuk Frame Painting (bukan Engine Assembly), tidak ada data kotor, tidak ada tabel rework_log. {I(n_core - n_core_ok)} dari {I(n_core)} pertanyaan inti tidak sama dengan view KPI.</li>'
+           f'<li>Kelima fakta data rancangan ditanam, tetapi generator, golden set, stand-in, dan guardrail ditulis oleh orang yang sama, sehingga hasil optimistis. {I(n_core - n_core_ok)} dari {I(n_core)} pertanyaan inti tidak sama dengan view KPI.</li>'
            '<li>Aplikasi belum di-deploy; kriteria pembaca awam belum diuji; Docker dan slide tidak dibuat; branch belum di-merge ke main. Lisensi data tidak berlaku (data karangan).</li></ul></div>')
 
 REPORT_PANE = ('<div class="pane" id="report" data-tab="report" hidden>\n<div class="callout g"><h4>Report Project versi 2: evaluasi hasil terhadap Design Project</h4>'
@@ -311,7 +313,7 @@ REPORT_PANE = ('<div class="pane" id="report" data-tab="report" hidden>\n<div cl
                    [f'<span class="en">{i}</span>', f'<a href="#rp{i}">{t}</a>', pill(v[0], v[1]), v[2]] for i, (t, v) in enumerate([
                        ("Data yang berhasil didapatkan", ("Berhasil", "", f"{I(dbt['production_daily'])} baris produksi, {I(dbt['defect_log'])} baris defect")),
                        ("Apakah business question terjawab?", ("Sesuai", "", f"{I(n_ans)} dari {I(n_ans)} terjawab, semua dengan catatan stand-in")),
-                       ("Apakah dataset sesuai dengan Design Project?", ("Sebagian", "p", "dua dari lima fakta data berubah, rework_log tidak ada")),
+                       ("Apakah dataset sesuai dengan Design Project?", ("Sesuai + penyesuaian", "p", "lima fakta data ditanam dan terdeteksi; dim_station tambahan")),
                        ("Apakah tools yang digunakan sesuai?", ("Berubah", "d", "Claude API diganti stand-in lokal; aplikasi belum di-deploy")),
                        ("Apakah alur pengerjaan sesuai dengan Design Project?", ("Sesuai + tambahan", "", "dua belas langkah dijalankan, tiga sebagian")),
                        ("Apakah project output tercapai?", ("Sebagian", "p", "aplikasi belum di-deploy, Docker tidak dibuat")),

@@ -4,8 +4,8 @@ tanpa_skema,filter tanggal,0,7,0,0,0.3543304387
 tanpa_skema,join,0,6,0,0,0.3903342917
 tanpa_skema,definisi KPI,0,6,0,0,0.3903342917
 tanpa_skema,ambigu,0,3,0,0,0.5614970356
-skema,agregasi,8,8,1,0.6755924317,1
-skema,filter tanggal,6,7,0.8571428571,0.4868721679,0.9743203759
+skema,agregasi,2,8,0.25,0.0714792121,0.5907245721
+skema,filter tanggal,1,7,0.1428571429,0.02567962406,0.5131278321
 skema,join,5,6,0.8333333333,0.436497175,0.9699466306
 skema,definisi KPI,0,6,0,0,0.3903342917
 skema,ambigu,0,3,0,0,0.5614970356

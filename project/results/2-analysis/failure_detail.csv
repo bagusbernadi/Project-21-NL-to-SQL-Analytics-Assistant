@@ -8,12 +8,12 @@ tanpa_skema,G06,agregasi,id,diblokir guardrail,tabel di luar daftar: defects,,"S
 tanpa_skema,G07,agregasi,en,diblokir guardrail,tabel di luar daftar: production,,"SELECT station, SUM(ng_count) AS ng FROM production GROUP BY station ORDER BY ng DESC, station LIMIT 1"
 tanpa_skema,G08,agregasi,id,diblokir guardrail,tabel di luar daftar: production,,SELECT COUNT(DISTINCT date) AS hari_produksi FROM production
 tanpa_skema,G09,filter tanggal,id,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(ng_count) AS ng FROM production WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-10' AND DATE '2026-06-16'
-tanpa_skema,G10,filter tanggal,id,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(total_input) AS input FROM production WHERE station = 'Packing' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+tanpa_skema,G10,filter tanggal,id,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(total_input) AS input FROM production WHERE station = 'Packaging' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
 tanpa_skema,G11,filter tanggal,en,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(ng_count) AS ng FROM production WHERE station = 'Frame Welding' AND date >= DATE '2026-04-01' AND date < DATE '2026-05-01'
 tanpa_skema,G12,filter tanggal,id,diblokir guardrail,tabel di luar daftar: defects,,SELECT SUM(defect_count) AS defect FROM defects WHERE date = DATE '2026-04-15'
 tanpa_skema,G13,filter tanggal,en,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(ng_count) AS ng FROM production WHERE shift = 'Shift 2' AND date BETWEEN DATE '2026-05-01' AND DATE '2026-05-15'
 tanpa_skema,G14,filter tanggal,id,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(ng_count) AS ng FROM production WHERE date >= DATE '2026-06-01' AND date <= DATE '2026-06-17'
-tanpa_skema,G15,filter tanggal,en,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(total_input) AS input FROM production WHERE station = 'Wheel & Suspension' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+tanpa_skema,G15,filter tanggal,en,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(total_input) AS input FROM production WHERE station = 'Wheel & Suspension Assembly' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
 tanpa_skema,G16,join,id,diblokir guardrail,tabel di luar daftar: defects,,SELECT SUM(defect_count) AS defect FROM defects d JOIN defect_types x ON x.defect_code = d.defect_code WHERE x.category = 'Las'
 tanpa_skema,G17,join,en,diblokir guardrail,tabel di luar daftar: defects,,"SELECT x.defect_name, SUM(defect_count) AS defect FROM defects d JOIN defect_types x ON x.defect_code = d.defect_code GROUP BY x.defect_name ORDER BY defect DESC, x.defect_name LIMIT 1"
 tanpa_skema,G18,join,id,diblokir guardrail,tabel di luar daftar: defects,,"SELECT x.defect_name, SUM(defect_count) AS defect FROM defects d JOIN defect_types x ON x.defect_code = d.defect_code WHERE d.station = 'Frame Painting' GROUP BY x.defect_name ORDER BY x.defect_name"
@@ -24,20 +24,31 @@ tanpa_skema,G22,definisi KPI,id,diblokir guardrail,tabel di luar daftar: product
 tanpa_skema,G23,definisi KPI,en,diblokir guardrail,tabel di luar daftar: production,,"SELECT station, AVG(ok_count * 1.0 / total_input) AS fpy FROM production GROUP BY station ORDER BY fpy ASC, station LIMIT 1"
 tanpa_skema,G24,definisi KPI,id,diblokir guardrail,tabel di luar daftar: production,,"SELECT model, AVG(ng_count * 1.0 / total_input) AS ng_rate FROM production GROUP BY model ORDER BY model"
 tanpa_skema,G25,definisi KPI,en,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(ok_count) * 1.0 / SUM(total_input) AS rty FROM production WHERE model = 'Bebek 125'
-tanpa_skema,G26,definisi KPI,id,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(d.defect_count) * 1000.0 / SUM(p.total_input) AS defect_per_1000 FROM production p JOIN defects d ON d.station = p.station AND d.date = p.date WHERE p.station = 'Body Panel Assembly'
+tanpa_skema,G26,definisi KPI,id,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(d.defect_count) * 1000.0 / SUM(p.total_input) AS defect_per_1000 FROM production p JOIN defects d ON d.station = p.station AND d.date = p.date WHERE p.station = 'Main Line Assembly'
 tanpa_skema,G27,definisi KPI,en,diblokir guardrail,tabel di luar daftar: production,,SELECT SUM(ok_count) * 1.0 / SUM(total_input) AS rty FROM production
 tanpa_skema,G28,ambigu,id,ambigu tidak diklarifikasi,tabel di luar daftar: production,,SELECT AVG(ok_count * 1.0 / total_input) AS fpy FROM production WHERE date = DATE '2026-06-16'
 tanpa_skema,G29,ambigu,en,ambigu tidak diklarifikasi,tabel di luar daftar: production,,SELECT AVG(ok_count * 1.0 / total_input) AS fpy FROM production
 tanpa_skema,G30,ambigu,id,ambigu tidak diklarifikasi,tabel di luar daftar: production,,"SELECT station, AVG(ok_count * 1.0 / total_input) AS fpy FROM production GROUP BY station ORDER BY fpy ASC, station LIMIT 1"
+skema,G01,agregasi,id,hasil salah,,,SELECT SUM(input_qty) AS input FROM production_daily WHERE station = 'Engine Assembly'
+skema,G02,agregasi,id,hasil salah,,,SELECT SUM(ng_qty) AS ng FROM production_daily WHERE station = 'Frame Painting'
+skema,G03,agregasi,en,hasil salah,,,SELECT SUM(ok_first_pass) AS ok FROM production_daily WHERE station = 'Final Inspection'
+skema,G04,agregasi,id,hasil salah,,,SELECT AVG(input_qty) AS avg_input FROM production_daily WHERE model = 'Sport 150'
+skema,G05,agregasi,en,hasil salah,,,"SELECT station, SUM(ng_qty) AS ng FROM production_daily GROUP BY station ORDER BY station"
+skema,G07,agregasi,en,hasil salah,,,"SELECT station, SUM(ng_qty) AS ng FROM production_daily GROUP BY station ORDER BY ng DESC, station LIMIT 1"
 skema,G09,filter tanggal,id,hasil salah,,,SELECT SUM(ng_qty) AS ng FROM production_daily WHERE station = 'Engine Assembly' AND date BETWEEN DATE '2026-06-10' AND DATE '2026-06-16'
+skema,G10,filter tanggal,id,hasil salah,,,SELECT SUM(input_qty) AS input FROM production_daily WHERE station = 'Packaging' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
+skema,G11,filter tanggal,en,hasil salah,,,SELECT SUM(ng_qty) AS ng FROM production_daily WHERE station = 'Frame Welding' AND date >= DATE '2026-04-01' AND date < DATE '2026-05-01'
+skema,G13,filter tanggal,en,hasil salah,,,SELECT SUM(ng_qty) AS ng FROM production_daily WHERE shift = 'Shift 2' AND date BETWEEN DATE '2026-05-01' AND DATE '2026-05-15'
+skema,G14,filter tanggal,id,hasil salah,,,SELECT SUM(ng_qty) AS ng FROM production_daily WHERE date >= DATE '2026-06-01' AND date <= DATE '2026-06-17'
+skema,G15,filter tanggal,en,hasil salah,,,SELECT SUM(input_qty) AS input FROM production_daily WHERE station = 'Wheel & Suspension Assembly' AND date >= DATE '2026-05-01' AND date < DATE '2026-06-01'
 skema,G21,join,en,SQL error,,"Binder Error: Ambiguous reference to column name ""station"" (use: 'production_daily.station' or 's.station')","SELECT s.station, SUM(ng_qty) AS ng FROM production_daily JOIN dim_station s ON s.station = station GROUP BY s.station, s.seq ORDER BY s.seq"
 skema,G22,definisi KPI,id,hasil salah,,,SELECT AVG(ok_first_pass * 1.0 / input_qty) AS fpy FROM production_daily WHERE station = 'Engine Assembly'
 skema,G23,definisi KPI,en,hasil salah,,,"SELECT station, AVG(ok_first_pass * 1.0 / input_qty) AS fpy FROM production_daily GROUP BY station ORDER BY fpy ASC, station LIMIT 1"
 skema,G24,definisi KPI,id,hasil salah,,,"SELECT model, AVG(ng_qty * 1.0 / input_qty) AS ng_rate FROM production_daily GROUP BY model ORDER BY model"
 skema,G25,definisi KPI,en,hasil salah,,,SELECT SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS rty FROM production_daily WHERE model = 'Bebek 125'
-skema,G26,definisi KPI,id,hasil salah,,,SELECT SUM(d.qty) * 1000.0 / SUM(p.input_qty) AS defect_per_1000 FROM production_daily p JOIN defect_log d ON d.station = p.station AND d.date = p.date WHERE p.station = 'Body Panel Assembly'
+skema,G26,definisi KPI,id,hasil salah,,,SELECT SUM(d.qty) * 1000.0 / SUM(p.input_qty) AS defect_per_1000 FROM production_daily p JOIN defect_log d ON d.station = p.station AND d.date = p.date WHERE p.station = 'Main Line Assembly'
 skema,G27,definisi KPI,en,hasil salah,,,SELECT SUM(ok_first_pass) * 1.0 / SUM(input_qty) AS rty FROM production_daily
 skema,G28,ambigu,id,ambigu tidak diklarifikasi,,,SELECT AVG(ok_first_pass * 1.0 / input_qty) AS fpy FROM production_daily WHERE date = DATE '2026-06-16'
 skema,G29,ambigu,en,ambigu tidak diklarifikasi,,,SELECT AVG(ok_first_pass * 1.0 / input_qty) AS fpy FROM production_daily
 skema,G30,ambigu,id,ambigu tidak diklarifikasi,,,"SELECT station, AVG(ok_first_pass * 1.0 / input_qty) AS fpy FROM production_daily GROUP BY station ORDER BY fpy ASC, station LIMIT 1"
-skema_kpi,G21,join,en,SQL error,,"Binder Error: Ambiguous reference to column name ""station"" (use: 'production_daily.station' or 's.station')","SELECT s.station, SUM(ng_qty) AS ng FROM production_daily JOIN dim_station s ON s.station = station GROUP BY s.station, s.seq ORDER BY s.seq"
+skema_kpi,G21,join,en,SQL error,,"Binder Error: Ambiguous reference to column name ""station"" (use: 'v_production.station' or 's.station')","SELECT s.station, SUM(ng_qty) AS ng FROM v_production JOIN dim_station s ON s.station = station GROUP BY s.station, s.seq ORDER BY s.seq"

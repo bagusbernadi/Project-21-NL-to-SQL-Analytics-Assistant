@@ -21,7 +21,7 @@
 
 ## 2. Data
 
-- Data simulasi (100% karangan), dibuat `00_generate_data.py` (seed 21260302): 4.500 baris produksi harian, 5.874 baris defect, 10 stasiun, 3 model, 2 shift. Data tidak di-commit; dibuat ulang dari generator dan diverifikasi dengan sidik jari SHA-256 di repo [DataCenter](https://github.com/bagusbernadi/DataCenter/tree/main/simulasi) (`01_verify_fingerprint.py`: 5 dari 5 berkas cocok).
+- Data simulasi (100% karangan), dibuat `00_generate_data.py` (seed 21260302): 4.500 baris produksi harian, 5.728 baris defect, 10 stasiun, 3 model, 2 shift. Data tidak di-commit; dibuat ulang dari generator dan diverifikasi dengan sidik jari SHA-256 di repo [DataCenter](https://github.com/bagusbernadi/DataCenter/tree/main/simulasi) (`01_verify_fingerprint.py`: 6 dari 6 berkas cocok).
 - Golden set 30 pertanyaan (8 agregasi, 7 filter tanggal, 6 join, 6 definisi KPI, 3 ambigu) dan red-team set 15 percobaan ditulis manual di `project/eval/`. Dokumentasi skema yang dikirim ke LLM: `project/docs/schema.md`.
 
 ## 3. Analysis
@@ -31,7 +31,7 @@ Alur: pertanyaan, prompt (3 konfigurasi), penulis SQL (stand-in), guardrail kode
 | Konfigurasi prompt | Benar | Execution accuracy (CI 95% Wilson) |
 |---|---|---|
 | Tanpa skema | 0 dari 30 | 0,0% (0,0% sampai 11,4%) |
-| Skema | 19 dari 30 | 63,3% (45,5% sampai 78,1%) |
+| Skema | 8 dari 30 | 26,7% (14,2% sampai 44,4%) |
 | Skema + definisi KPI | 29 dari 30 | 96,7% (83,3% sampai 99,4%) |
 
 - Konfigurasi dan stand-in dirancang bersama, jadi selisih antar konfigurasi adalah hasil rancangan, bukan bukti tentang LLM nyata.
@@ -45,7 +45,7 @@ Pasang Claude API pada antarmuka `StandIn.generate` dan jalankan ulang golden se
 
 ## 5. Impact
 
-Estimasi (`estimated`): sekitar 48,3 jam analis per bulan (200 pertanyaan x 96,7% benar x 15 menit / 60); menit per query manual adalah asumsi. Biaya API per 100 pertanyaan dengan token perkiraan dan harga asumsi: sekitar 0,22 USD (estimated).
+Estimasi (`estimated`): sekitar 48,3 jam analis per bulan (200 pertanyaan x 96,7% benar x 15 menit / 60); menit per query manual adalah asumsi. Biaya API per 100 pertanyaan dengan token perkiraan dan harga asumsi: sekitar 0,25 USD (estimated).
 
 ```
 jam hemat per bulan = pertanyaan per bulan x akurasi x menit manual per query / 60
@@ -56,7 +56,7 @@ jam hemat per bulan = pertanyaan per bulan x akurasi x menit manual per query / 
 - **Data adalah simulasi**; angka menggambarkan simulasi, bukan lini produksi.
 - **Penulis SQL adalah pengganti aturan lokal, bukan Claude**; akurasi, latency LLM, dan biaya bukan pengukuran model nyata. Latency API (3 detik), harga token, token per teks, menit manual, dan volume pertanyaan adalah asumsi.
 - Golden set kecil (30 pertanyaan) dan ditulis oleh orang yang sama dengan stand-in; akurasi cenderung optimistis.
-- Fakta data rancangan hanya sebagian ditanam: stasiun terburuk Frame Painting (bukan Engine Assembly), tidak ada data kotor 2 sampai 3%, tidak ada tabel rework_log.
+- Kelima fakta data rancangan ditanam dan terdeteksi; generator, golden set, stand-in, dan guardrail ditulis oleh orang yang sama, jadi hasil optimistis.
 - Aplikasi belum di-deploy (diuji AppTest: 10 dari 10 lulus); success criteria "orang awam dalam 1 menit" belum diuji; Docker dan slide tidak dibuat; branch belum di-merge ke main.
 - Cek silang: 75 dari 75 cocok; pytest 57 dari 57 lulus.
 

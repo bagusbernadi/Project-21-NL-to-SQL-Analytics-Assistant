@@ -7,7 +7,7 @@ tanpa_skema,klarifikasi keliru,0
 tanpa_skema,timeout,0
 skema,diblokir guardrail,0
 skema,SQL error,1
-skema,hasil salah,7
+skema,hasil salah,18
 skema,ambigu tidak diklarifikasi,3
 skema,klarifikasi keliru,0
 skema,timeout,0

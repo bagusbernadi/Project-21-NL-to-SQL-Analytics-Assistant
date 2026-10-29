@@ -48,7 +48,7 @@ def est_tokens(text):
 EVAL_WORDS = re.compile(r"\b(bagus|baik|buruk|bermasalah|good|well|bad|problem|nggak|ngga)\b", re.I)
 MONTHS = {"januari": 1, "februari": 2, "maret": 3, "april": 4, "mei": 5, "juni": 6, "juli": 7, "agustus": 8, "september": 9, "oktober": 10, "november": 11, "desember": 12,
           "january": 1, "february": 2, "march": 3, "may": 5, "june": 6, "july": 7, "august": 8, "october": 10, "december": 12}
-STATIONS = ["Frame Welding", "Frame Painting", "Engine Assembly", "Wiring Harness Install", "Wheel & Suspension", "Body Panel Assembly", "Electrical Test", "Final Inspection", "Performance Test (Dyno)", "Packing"]
+STATIONS = ["Frame Welding", "Frame Painting", "Engine Assembly", "Engine Bench Test", "Wheel & Suspension Assembly", "Main Line Assembly", "Electrical Check", "Roller Test", "Final Inspection", "Packaging"]
 MODELS = {"matic 110": "Matic 110", "bebek 125": "Bebek 125", "sport 150": "Sport 150", "matic": "Matic 110", "bebek": "Bebek 125", "sport": "Sport 150"}
 CATEGORIES = ["Las", "Cat", "Mesin", "Kelistrikan", "Roda", "Body", "Kosmetik", "Performa", "Label"]
 # nama yang ditebak tanpa skema (ASUMSI di docs/llm_standin.md): tabel dan kolom ukuran tidak bisa diketahui
@@ -121,6 +121,8 @@ class StandIn:
     def generate(self, question, config):
         ql = question.lower()
         n = REAL if config != "tanpa_skema" else {**REAL, **{k: v for k, v in GUESS.items() if v}}
+        if config == "skema_kpi":
+            n = {**n, "prod": "v_production"}                 # data v3: dokumentasi KPI memberi tahu bahwa production_daily kotor, jadi memakai view bersih
         measure = detect_measure(ql)
         if EVAL_WORDS.search(question) or measure is None:
             if config == "skema_kpi":
