@@ -2,6 +2,8 @@
 
 # Project 21: Natural Language to SQL Analytics Assistant
 
+**Halaman web:** https://bagusbernadi.github.io/Project-21-NL-to-SQL-Analytics-Assistant/
+
 **Status: Selesai di branch `project-21-build` (belum di-merge ke `main`).** Halaman rancangan dan laporan: [`design-and-report/index.html`](design-and-report/index.html) (tab Design Project dan Report Project).
 
 **PENTING: komponen "LLM" pada project ini adalah pengganti aturan lokal, bukan Claude API** (tidak ada API key di sesi pengerjaan). Angka akurasi menggambarkan pengganti itu dan alat evaluasinya, bukan kemampuan Claude.
