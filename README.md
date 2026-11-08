@@ -4,7 +4,7 @@
 
 **Halaman web:** https://bagusbernadi.github.io/Project-21-NL-to-SQL-Analytics-Assistant/
 
-**Status: Selesai di branch `project-21-build` (belum di-merge ke `main`).** Halaman rancangan dan laporan: [`design-and-report/index.html`](design-and-report/index.html) (tab Design Project dan Report Project).
+**Status: Selesai dan digabung ke `main`.** Halaman rancangan dan laporan: [`design-and-report/index.html`](design-and-report/index.html) (tab Design Project dan Report Project).
 
 **PENTING: komponen "LLM" pada project ini adalah pengganti aturan lokal, bukan Claude API** (tidak ada API key di sesi pengerjaan). Angka akurasi menggambarkan pengganti itu dan alat evaluasinya, bukan kemampuan Claude.
 
@@ -59,7 +59,7 @@ jam hemat per bulan = pertanyaan per bulan x akurasi x menit manual per query / 
 - **Penulis SQL adalah pengganti aturan lokal, bukan Claude**; akurasi, latency LLM, dan biaya bukan pengukuran model nyata. Latency API (3 detik), harga token, token per teks, menit manual, dan volume pertanyaan adalah asumsi.
 - Golden set kecil (30 pertanyaan) dan ditulis oleh orang yang sama dengan stand-in; akurasi cenderung optimistis.
 - Kelima fakta data rancangan ditanam dan terdeteksi; generator, golden set, stand-in, dan guardrail ditulis oleh orang yang sama, jadi hasil optimistis.
-- Aplikasi belum di-deploy (diuji AppTest: 10 dari 10 lulus); success criteria "orang awam dalam 1 menit" belum diuji; Docker dan slide tidak dibuat; branch belum di-merge ke main.
+- Aplikasi belum di-deploy (diuji AppTest: 10 dari 10 lulus); success criteria "orang awam dalam 1 menit" belum diuji; Docker dan slide tidak dibuat.
 - Cek silang: 75 dari 75 cocok; pytest 57 dari 57 lulus.
 
 ## Menjalankan
